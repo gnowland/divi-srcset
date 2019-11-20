@@ -44,7 +44,7 @@ function hb_add_id_to_images( $content ) {
 
   foreach( $matches[0] as $image ) {
     if ( !preg_match( '/wp-image-([0-9]+)/i', $image ) ) {
-      $dom = new DOMDocument();
+      $dom = new \DOMDocument();
       $dom->loadHTML($image);
       $img_element = $dom->getElementsByTagName('img')->item(0);
       
