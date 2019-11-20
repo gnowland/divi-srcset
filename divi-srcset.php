@@ -83,7 +83,7 @@ function hb_pb_maybe_add_advanced_styles() {
 
   // do not output advanced css if Frontend Builder is active
   if ( ! et_fb_is_enabled() ) {
-    $styles['et-builder-advanced-style'] = ET_Builder_Element::get_style();
+    $styles['et-builder-advanced-style'] = \ET_Builder_Element::get_style();
     
     if ( preg_match_all('/\.[_a-z0-9]+\.et_pb_fullwidth_header \{.*background-image.*\}/', $styles['et-builder-advanced-style'], $matches ) ) {
       foreach( $matches[0] as $bg_css ) {
@@ -117,7 +117,7 @@ add_action( 'wp_footer', __NAMESPACE__ . '\hb_pb_maybe_add_advanced_styles', 9 )
 function hb_responsive_bg_image() {
   global $wpdb;
   
-  $css = ET_Builder_Element::get_style();
+  $css = \ET_Builder_Element::get_style();
 
 
   //find the background-image css in the inline css	
