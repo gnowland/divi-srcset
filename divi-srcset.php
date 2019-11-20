@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Responsive Images for Divi
+Plugin Name: Responsive Images for Divi < v3.27
 Plugin URI: https://www.fldtrace.com/better-faster-responsive-images-divi
-Description: Better, Faster, Responsive Images for Divi using the HTML &lt;img&gt; srcset attribute
+Description: Better, Faster, Responsive Images for Divi using the HTML &lt;img&gt; SRCSET attribute. (Note: SRCSET support was added to Divi in v3.27)
 Version: 1.0
 Author: Gifford Nowland
 Author URI: https://giffordnowland.com/
