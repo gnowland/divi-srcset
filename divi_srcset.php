@@ -2,12 +2,14 @@
 /*
 Plugin Name: Responsive Images for Divi
 Plugin URI: https://www.fldtrace.com/better-faster-responsive-images-divi
-Description: Better, Faster, Responsive Images for Divi using the HTML &lt;img&gt; srcset spec
+Description: Better, Faster, Responsive Images for Divi using the HTML &lt;img&gt; srcset attribute
 Version: 1.0
-Author: Lucian Florian
-Author URI: https://www.fldtrace.com/
+Author: Gifford Nowland
+Author URI: https://giffordnowland.com/
 License: GPL2
 */
+namespace divi_srcset;
+
 /**
  * Better, Faster, Responsive Images for Divi
  * @author Lucian Florian
@@ -15,11 +17,16 @@ License: GPL2
  * @link   https://gist.github.com/fldtrace/b75fe97c9a60270dd672566b796be936
  */
 
+// Check for Divi, bail if not divi
+if( get_option( 'template' ) !== 'Divi' ) {
+  return;
+}
+
 // enable divi functions
-add_action( 'wp_enqueue_scripts', 'my_enqueue_assets' );
 function my_enqueue_assets() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
 }
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\my_enqueue_assets' );
 
 //add 1440px image size
 add_image_size('image_1440', 1440, 9999, false);
@@ -28,7 +35,6 @@ add_image_size('image_1440', 1440, 9999, false);
 remove_filter( 'the_content', 'wp_make_content_images_responsive', 10);
 add_filter( 'the_content', 'wp_make_content_images_responsive', 1600, 1);
 
-add_filter( 'the_content', 'hb_add_id_to_images', 1599, 1);
 //filter the content and add wp-image-$id class to the images, allowing responsive feature to work
 function hb_add_id_to_images( $content ) {
   global $wpdb;
@@ -58,6 +64,7 @@ function hb_add_id_to_images( $content ) {
 
   return $content;
 }
+add_filter( 'the_content', __NAMESPACE__ . '\hb_add_id_to_images', 1599, 1);
 
 //lower image max-width to 1080px everywhere (retina compatible)
 function hb_content_image_sizes_attr( $sizes, $size ) {
@@ -67,7 +74,7 @@ function hb_content_image_sizes_attr( $sizes, $size ) {
 
   return $sizes;
 }
-add_filter( 'wp_calculate_image_sizes', 'hb_content_image_sizes_attr', 10 , 2 );
+add_filter( 'wp_calculate_image_sizes', __NAMESPACE__ . '\hb_content_image_sizes_attr', 10 , 2 );
 
 
 //override Divi 'et_pb_maybe_add_advanced_styles' function to fix the problem of browser downloading overridden background image
@@ -103,10 +110,9 @@ function hb_pb_maybe_add_advanced_styles() {
   
   remove_action( 'wp_footer', 'et_pb_maybe_add_advanced_styles' );
 }
-add_action( 'wp_footer', 'hb_pb_maybe_add_advanced_styles', 9 );
+add_action( 'wp_footer', __NAMESPACE__ . '\hb_pb_maybe_add_advanced_styles', 9 );
 
 
-add_action('wp_footer', 'hb_responsive_bg_image', 10);
 //add responsiveness for background images
 function hb_responsive_bg_image() {
   global $wpdb;
@@ -225,3 +231,4 @@ function hb_responsive_bg_image() {
     }
   }
 }
+add_action('wp_footer', __NAMESPACE__ . '\hb_responsive_bg_image', 10);
